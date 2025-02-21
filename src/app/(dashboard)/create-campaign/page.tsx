@@ -1,6 +1,6 @@
 import { Textarea } from "@/components/ui/textarea";
 
-export default function Login() {
+export default function Chat() {
   return (
     <div className="container gap-5 max-w-7xl m-auto h-full flex-1 rounded-sm p-5 flex flex-col">
       <div className="flex flex-1 flex-col gap-5 overflow-auto max-h-[75vh] px-2">
