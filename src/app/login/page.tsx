@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export default function Login() {
   return (
-    <div className="w-screen h-screen flex">
-      <div className="flex-1 flex items-center justify-center">
+    <div className="bg-white w-screen h-screen flex">
+      <div className="bg-white flex-1 flex items-center justify-center">
         <form className="flex flex-col gap-5 min-w-[600px] ">
           <Image
             src="/gocase-collabs.svg"
