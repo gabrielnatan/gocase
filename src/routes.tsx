@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
+import { Home } from "./pages/home";
+import { Login } from "./pages/login";
+import { Campaign } from "./pages/campaign";
 import { AuthLayout } from "./layout/auth";
-import { CreateAccount } from "./pages/CreateAccount";
+import { CreateAccount } from "./pages/createAccount";
+import { DashboardLayout } from "./layout/dashboard";
 
 export const AppRouter = () => {
   return (
@@ -12,7 +14,10 @@ export const AppRouter = () => {
           <Route path="/auth/login" Component={Login} />
           <Route path="/auth/create-account" Component={CreateAccount} />
         </Route>
-        <Route path="/" Component={Home} />
+        <Route Component={DashboardLayout}>
+          <Route path="/" Component={Home} />
+          <Route path="/campaign" Component={Campaign} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

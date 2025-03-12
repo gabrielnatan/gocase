@@ -11,7 +11,9 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "@/service/auth";
+import { useCustomerStore } from "@/store";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -19,6 +21,8 @@ const formSchema = z.object({
 });
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const { setAccessToken } = useCustomerStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,8 +31,24 @@ export const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const { mutate: onLogin } = useLogin();
+
+  function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    onLogin(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: (data) => {
+          setAccessToken(data.access_token);
+          navigate("/");
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
   }
 
   return (

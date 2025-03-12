@@ -12,6 +12,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useCreateAccount } from "@/service/auth";
+
 const formSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
@@ -21,6 +23,8 @@ const formSchema = z.object({
 });
 
 export const CreateAccount = () => {
+  const { mutate: onCreateAccount } = useCreateAccount();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,8 +36,23 @@ export const CreateAccount = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  function onSubmit({
+    password,
+    email,
+    first_name,
+    last_name,
+  }: z.infer<typeof formSchema>) {
+    onCreateAccount(
+      { password, email, first_name, last_name },
+      {
+        onError: (error) => {
+          console.error("ERRO: ", error);
+        },
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      }
+    );
   }
 
   return (

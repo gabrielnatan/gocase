@@ -1,18 +1,6 @@
-"use client";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
 import { HomeIcon, Inbox } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
+import Logo from "@/assets/go-case-logo.svg";
 
 export function AppSidebar() {
   const items = [
@@ -23,45 +11,25 @@ export function AppSidebar() {
     },
     {
       title: "Criar campanha",
-      url: "/create-campaign",
+      url: "/campaign",
       icon: <Inbox />,
     },
   ];
 
   return (
-    <div>
-      <SidebarProvider>
-        <Sidebar>
-          <SidebarContent>
-            <SidebarHeader>
-              <div className="py-5 w-full h-full flex items-center justify-center">
-                <Image
-                  src="/go-case-logo.svg"
-                  alt="Gocase Collabs Logo"
-                  width={100}
-                  height={50}
-                />
-              </div>
-            </SidebarHeader>
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.url} className="text-lg">
-                          {item.icon}
-                          <span className="text-lg">{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-      </SidebarProvider>
+    <div className="w-full h-screen border-r bg-white flex flex-col">
+      <header className="p-2 h-[64px] border-b flex items-center justify-center">
+        <img src={Logo} alt="logo" />
+      </header>
+      <ol className="flex p-2 flex-1 flex-col">
+        {items.map((el) => {
+          return (
+            <Link to={el.url}>
+              <li className="p-2">{el.title}</li>
+            </Link>
+          );
+        })}
+      </ol>
     </div>
   );
 }
