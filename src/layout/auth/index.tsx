@@ -6,7 +6,6 @@ export const AuthLayout = () => {
       <div className="flex-1 flex items-center justify-center">
         <Outlet />
       </div>
-      <div className="flex-1 bg-gray-700 "></div>
     </div>
   );
 };
