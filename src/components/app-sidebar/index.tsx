@@ -1,18 +1,18 @@
-import { HomeIcon, Inbox } from "lucide-react";
+import { Box, Inbox } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "@/assets/go-case-logo.svg";
 
 export function AppSidebar() {
   const items = [
     {
-      title: "Painel",
+      title: "Criar campanha",
       url: "/",
-      icon: <HomeIcon />,
+      icon: <Inbox />,
     },
     {
-      title: "Criar campanha",
-      url: "/campaign",
-      icon: <Inbox />,
+      title: "Produtos",
+      url: "/products",
+      icon: <Box />,
     },
   ];
 

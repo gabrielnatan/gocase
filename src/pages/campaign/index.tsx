@@ -12,6 +12,7 @@ import { MessageSquare, Send } from "lucide-react";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Loader } from "@/components/app-loader";
+import { useUploadImages } from "@/service/message/useUploadImages";
 
 export const Campaign = () => {
   const [messages, setMessages] = useState<ChatMessageProps[]>([]);
@@ -22,7 +23,8 @@ export const Campaign = () => {
   const { mutate: onSelectChat } = useGetAllMessages();
   const { mutate: onSendMessage, isPending } = useCreateMessage();
   const { mutate: onStartNewChat } = useCreateChat();
-  console.log("isPending => ", isPending);
+  const { mutate: onUploadImage } = useUploadImages();
+
   const onSelect = (id: string) => {
     setChatSelected(id);
     onSelectChat(id, {
@@ -35,12 +37,12 @@ export const Campaign = () => {
     });
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (data?: string) => {
     const message: ChatMessageProps = {
       id: uuid(),
       created_at: new Date().toString(),
       chat_id: chatSelected,
-      content: value,
+      content: data ?? value,
       sender: "user",
       type: "message",
     };
@@ -109,12 +111,44 @@ export const Campaign = () => {
 
       <div className=" w-full  h-full   overflow-auto flex flex-col gap-3 relative">
         <div className="flex-1  flex flex-col gap-2 max-h-[85%] overflow-auto">
-          <div className=" bg-white z-50 text-center  border-y w-full p-2 border-b font-bold text-sm text-gray-500 sticky top-0">
-            Ontem ás 13:10
-          </div>
           <div className="flex flex-col p-5 gap-2">
             {messages.map((message) => {
-              return <AppMessageItem {...message} />;
+              return (
+                <AppMessageItem
+                  {...message}
+                  callback={(type: string, data: any) => {
+                    if (type === "product") {
+                      handleSendMessage(
+                        `Ids dos produtos selecionados: ${data.join(",")}`
+                      );
+                    }
+
+                    if (type === "postagem") {
+                      console.log("AQUI   maneiro", data);
+                      handleSendMessage(data);
+                    }
+
+                    if (type === "influencers") {
+                      console.log("AQUI   maneiro", data);
+                      handleSendMessage(
+                        `Lista de ids dos influencers ${data.join(",")}`
+                      );
+                    }
+
+                    if (type === "upload") {
+                      console.log("AQUI   maneiro", data);
+                      onUploadImage(data, {
+                        onSuccess: (data) => {
+                          console.log(data);
+                          handleSendMessage(
+                            `url das imagens: ${data?.join(",")}`
+                          );
+                        },
+                      });
+                    }
+                  }}
+                />
+              );
             })}
             {isPending && (
               <AppMessageItem
@@ -139,7 +173,7 @@ export const Campaign = () => {
             placeholder="No que posso te ajudar hoje?"
           />
           <button
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
             className=" flex items-center justify-center p-5 border-2 border-gray-300 hover:bg-gray-100 cursor-pointer rounded-sm"
           >
             <Send />

@@ -1,7 +1,10 @@
 import { ChatMessageProps } from "@/service/message/useGetAllMessages";
 import ReactMarkdown from "react-markdown";
-import AppImageUpload from "../app-upload-image";
 import CampaignDetails from "../app-campaign-details";
+import { ProductSelector } from "../app-select-product";
+import { ContentTypeSelector } from "../contentSelector";
+import { InfluencerSelector } from "../app-Influencer-selector";
+import MultipleImageUpload from "../app-upload-image";
 export const AppMessageItem = ({
   content,
   created_at,
@@ -9,6 +12,7 @@ export const AppMessageItem = ({
   sender,
   type,
   props,
+  callback,
 }: ChatMessageProps) => {
   const date = new Date(created_at);
   const hour = date.getHours();
@@ -20,7 +24,44 @@ export const AppMessageItem = ({
   }
 
   if (type === "upload") {
-    return <AppImageUpload />;
+    return (
+      <MultipleImageUpload
+        onSelect={(data: any) => {
+          if (callback) callback("upload", data);
+        }}
+      />
+    );
+  }
+
+  if (type === "product") {
+    return (
+      <ProductSelector
+        onSelect={(data: string[]) => {
+          if (callback) callback("product", data);
+        }}
+      />
+    );
+  }
+
+  if (type === "influencers") {
+    return (
+      <InfluencerSelector
+        onSelect={(data: string[]) => {
+          if (callback) callback("influencers", data);
+        }}
+      />
+    );
+  }
+
+  if (type === "postagem") {
+    return (
+      <ContentTypeSelector
+        onSelect={(data) => {
+          console.log("AQUI MANEIRO ", data);
+          if (callback) callback("postagem", data);
+        }}
+      />
+    );
   }
 
   return (

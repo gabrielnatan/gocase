@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { z } from "zod";
+import { getCookieValue } from "@/service/axios";
 
 const CustomerSchema = z.object({
   first_name: z.string().min(1, "O primeiro nome é obrigatório"),
@@ -23,7 +24,7 @@ const useCustomerStore = create<CustomerStore>((set) => ({
     last_name: "",
     email: "",
   },
-  access_token: "",
+  access_token: getCookieValue("access_token") ?? "",
   setCustomer: (customer) => {
     const parsedCustomer = CustomerSchema.safeParse(customer);
     if (!parsedCustomer.success) {

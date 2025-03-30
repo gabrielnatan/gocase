@@ -7,10 +7,17 @@ export interface ChatMessageProps {
   chat_id: string;
   content: string;
   props?: any;
-  type: "message" | "briefing" | "upload";
+  type:
+    | "message"
+    | "briefing"
+    | "upload"
+    | "product"
+    | "postagem"
+    | "influencers";
   children?: ReactNode;
   sender: string;
   created_at: string;
+  callback?: (type: string, data: any) => void;
 }
 
 interface ResponseChatMessageProps {

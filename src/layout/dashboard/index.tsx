@@ -9,6 +9,7 @@ export const DashboardLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("access_token ", access_token);
     if (access_token === "") {
       navigate("/auth/login");
     }
